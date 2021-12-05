@@ -1,0 +1,90 @@
+﻿@model AsistenteGimnasio.Models.Receta
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Receta</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.TiempoComida.Tiempo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TiempoComida.Tiempo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TipoReceta.Tipo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TipoReceta.Tipo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Nombre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Nombre)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Imagen)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Imagen)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Ingredientes)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Ingredientes)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Calorias)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Calorias)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.HidratosDeCrabono)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.HidratosDeCrabono)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Proteinas)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Proteinas)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.grasa)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.grasa)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.RecetaId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

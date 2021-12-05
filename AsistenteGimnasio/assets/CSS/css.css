@@ -1,0 +1,25 @@
+﻿.sombra-estilo-1 {
+    box-shadow: 0 10px 16px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19) !important;
+}
+.btn-resaltar:hover{
+    height:105%;
+    width:105%;
+    z-index:2;
+
+}
+.btn-resaltar-estilo-2:hover {
+ height:105%;
+}
+.txt-resaltar-estilo-1{
+    color:purple;
+    
+}
+.card-ingredientes{
+    margin-right:3%;
+    margin-left:3%;
+}
+.imagen-r{
+   margin-left:15%;
+
+}
+

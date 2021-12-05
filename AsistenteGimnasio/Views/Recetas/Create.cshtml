@@ -1,0 +1,144 @@
+﻿@model AsistenteGimnasio.Models.Receta
+
+@{
+    ViewBag.Title = "Agregar Receta";
+}
+
+@*<h2>Create</h2>*@
+
+<head>
+    <style>
+        .form-group{
+            margin-top:2%;
+        }
+        .labelv1{
+            margin-bottom:-2%;
+        }
+    </style>
+</head>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        @*<h4>Receta</h4>*@
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.Nombre, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Nombre, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Nombre, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.TipoRecetaId, "Tipo de receta", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("TipoRecetaId", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.TipoRecetaId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.TiempoComidaId, "TiempoComidaId", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("TiempoComidaId", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.TiempoComidaId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Imagen, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input type="text" class="form-control" name="Imagen" id="Imagen" value="" placeholder="Link" />
+                @* @Html.EditorFor(model => model.Imagen, new { htmlAttributes = new {@class = "form-control" } })*@
+                @Html.ValidationMessageFor(model => model.Imagen, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        @*<div class="form-group">
+                @Html.LabelFor(model => model.Ingredientes, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Ingredientes, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Ingredientes, "", new { @class = "text-danger" })
+                </div>
+            </div>*@
+
+
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Calorias, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Calorias, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Calorias, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.HidratosDeCrabono, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.HidratosDeCrabono, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.HidratosDeCrabono, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Proteinas, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Proteinas, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Proteinas, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.grasa, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.grasa, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.grasa, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <label class="control-label labelv1 col-md-2">Ingredientes</label>
+        <div class="form-group">
+            @*@Html.LabelFor(model => model.Procedimiento, htmlAttributes: new { @class = "control-label col-md-2" })*@
+            <div class="col-md-10">
+                @*<hr />|*@
+                <textarea style="background-color:lightgray" rows="5" class="form-control" name="Ingredientes" id="Ingredientes"> </textarea>
+
+                @*@Html.TextAreaFor(model => model.Procedimiento, new { htmlAttributes = new { @class = "form-control" } })*@
+                @*@Html.TextArea(model => model.Procedimiento, new { htmlAttributes = new { @class = "form-control" } })*@
+                @Html.ValidationMessageFor(model => model.Procedimiento, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <label class="control-label labelv1 col-md-2">Procedimiento</label>
+        <div class="form-group">
+            @*@Html.LabelFor(model => model.Procedimiento, htmlAttributes: new { @class = "control-label col-md-2" })*@
+            <div class="col-md-10">
+                @*<hr />|*@
+                <textarea style="background-color:lightgray" rows="5" class="form-control" name="Procedimiento" id="Procedimiento"> </textarea>
+               
+                @*@Html.TextAreaFor(model => model.Procedimiento, new { htmlAttributes = new { @class = "form-control" } })*@
+                @*@Html.TextArea(model => model.Procedimiento, new { htmlAttributes = new { @class = "form-control" } })*@
+                @Html.ValidationMessageFor(model => model.Procedimiento, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

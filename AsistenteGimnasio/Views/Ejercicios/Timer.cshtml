@@ -1,0 +1,80 @@
+﻿
+@{
+    ViewBag.Title = "Timer";
+}
+<link href="~/assets/Cronometro/cronomentro.css" rel="stylesheet" />
+
+
+@using (Html.BeginForm("RegistrarTiempo", "Ejercicios", FormMethod.Post, FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div class="row">
+        <div class="row col-md-12 time">
+
+            @*<div class="col-md-5 hr" style="text-align:right"> <div class="form-group"><input class="input-cr" type="text" id="hour" name="name" value="00" /> : </div></div>
+                <div class="col-md-3 mn" style="text-align:center"> <div class="form-group"><input class="input-cr" type="text" id="minute" name="name" value="00" /> : </div></div>
+                <div class="col-md-4 sg" style="text-align:left"> <div class="form-group"><input class="input-cr" type="text" id="second" name="name" value="00" /></div></div>*@
+            <div class="col-md-12 hr">
+                <div class="form-group"><input class="input-cr" type="text" id="timetotal" name="Tiempo" value="00:00:00" /></div>
+            </div>
+            <input type="text" hidden name="HoraIni" value="@DateTime.Now.ToString("HH:mm:ss")" />
+            <div class="row buttons-timer">
+                <div>
+                    <button type="button" class="btn btn-fill btn-comenzar" id="btn-comenzar">Comenzar</button>
+                    <button type="button" id="btn-reiniciar" onclick="location.reload()" class="btn btn-fill">Reiniciar <i style="font-size:36px" class="material-icons md-36">cached</i></button>
+                    <button type="submit" id="btn_guardar" class="btn btn-fill" disabled> Guardar <i class="material-icons" style="font-size:36px">schedule</i></button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<script>
+
+    $(document).ready(function () {
+
+        var tiempo = {
+            hora: 0,
+            minuto: 0,
+            segundo: 0
+        };
+
+        var tiempo_corriendo = null;
+
+        $("#btn-comenzar").click(function () {
+            if ($(this).text() == 'Comenzar') {
+                $(this).text('Detener');
+                document.getElementById("btn_guardar").disabled = false;
+
+                tiempo_corriendo = setInterval(function () {
+                    // Segundos
+                    tiempo.segundo++;
+                    if (tiempo.segundo >= 60) {
+                        tiempo.segundo = 0;
+                        tiempo.minuto++;
+                    }
+
+                    // Minutos
+                    if (tiempo.minuto >= 60) {
+                        tiempo.minuto = 0;
+                        tiempo.hora++;
+                    }
+
+                    $("#hour").val(tiempo.hora < 10 ? '0' + tiempo.hora : tiempo.hora);
+                    $("#minute").val(tiempo.minuto < 10 ? '0' + tiempo.minuto : tiempo.minuto);
+                    $("#second").val(tiempo.segundo < 10 ? '0' + tiempo.segundo : tiempo.segundo);
+
+                    var horas = tiempo.hora < 10 ? '0' + tiempo.hora : tiempo.hora;
+                    var minutos = tiempo.minuto < 10 ? '0' + tiempo.minuto : tiempo.minuto;
+                    var segundos = tiempo.segundo < 10 ? '0' + tiempo.segundo : tiempo.segundo;
+
+                    $("#timetotal").val(horas + ":" + minutos + ":" + segundos);
+                }, 1000);
+            }
+            else {
+                $(this).text('Comenzar');
+                clearInterval(tiempo_corriendo);
+            }
+        })
+    })
+
+</script>

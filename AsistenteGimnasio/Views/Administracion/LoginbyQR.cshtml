@@ -1,0 +1,111 @@
+﻿<html xmlns="http://www.w3.org/1999/xhtml">
+
+@using AsistenteGimnasio.Models
+@using Microsoft.AspNet.Identity
+@{
+    ApplicationDbContext db = new ApplicationDbContext();
+    Layout = null;
+    string id = ViewBag.Us;
+
+    var us = (from x in db.Users
+              where x.Id == id
+              select x).FirstOrDefault();
+
+
+}
+<head>
+    <title></title>
+    <style>
+        body {
+            background-color: #222222;
+            font-family: open sans,sans-serif;
+        }
+
+        .box {
+            height: 300px;
+            width: 500px;
+            padding: 30px;
+            background-color: #fff;
+            border-radius: 3px;
+            box-shadow: 0 0 10px #222;
+            /*margin:50% 0 0 50%;
+                position:absolute;*/
+        }
+
+        label {
+            display: inline-block;
+            max-width: 100%;
+            margin-bottom: 5px;
+            font-weight: 700;
+            color: gray;
+        }
+
+        .cont {
+            /*background: yellow;*/
+            height: 100%;
+            /*IMPORTANTE*/
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .form-control {
+            width: 100%;
+            border-radius: 4px;
+            padding: 6px 12px;
+            box-shadow: none;
+            margin-bottom: 20px;
+        }
+
+        input {
+            display: block;
+            box-shadow: none;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+    <div class="row cont">
+
+        <div class="box" style="text-align:center">
+            <h3>Iniciar sesión como @us.Nombre @us.Apellido</h3>
+            @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new
+            {
+                @class = " login100-form validate-form",
+                role = "form"
+            }))
+            {
+
+                @Html.AntiForgeryToken()
+
+                <div hidden>
+                    <input type="text" hidden class="hidden" name="Email" value="@us.Email" />
+                    <input type="text" hidden name="Password" value="@us.pss2" />
+                </div>
+                <div style="width:100%; height:60%">
+                    <button style="height:100%; border:none;cursor:pointer; background-color:white" type="submit"><img src="~/Resources/User.png" height="100%" /></button>
+
+                </div>
+                @*<img src="~/Resources/User.png" class="btn" type="submit" height="100%" />*@
+                <div style="height:20%">
+                    <button class="btn-entrar" style="height:100%; border:none;cursor:pointer; background-color:white" type="submit">Entrar</button>
+                </div>
+            }
+
+
+            <style>
+                .btn-entrar {
+                    color: mediumpurple;
+                    font-size: large;
+                }
+
+                    .btn-entrar:hover {
+                        color: aqua;
+                    }
+            </style>
+
+        </div>
+    </div>
+</body>
+</html>

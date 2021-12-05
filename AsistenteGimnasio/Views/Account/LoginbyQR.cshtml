@@ -1,0 +1,92 @@
+﻿<html xmlns="http://www.w3.org/1999/xhtml">
+
+@using AsistenteGimnasio.Models
+@using Microsoft.AspNet.Identity
+@{
+    ApplicationDbContext db = new ApplicationDbContext();
+    Layout = null;
+    string id = ViewBag.Us;
+    string idp = "AAH3qD3fTD+qOPtGLCw+FJjaW4yl+mjFYHshBhnqDHeaO3r22LljaKMylP8FpFcTqQ==";
+    var us = (from x in db.Users
+              where x.PasswordHash == idp
+              select x).FirstOrDefault();
+
+}
+<head>
+    <title></title>
+    <style>
+        body {
+            background-color: #222222;
+            font-family: open sans,sans-serif;
+        }
+
+        .box {
+            height: 300px;
+            width: 500px;
+            padding: 30px;
+            background-color: #fff;
+            border-radius: 3px;
+            box-shadow: 0 0 10px #222;
+            /*margin:50% 0 0 50%;
+                position:absolute;*/
+        }
+
+        label {
+            display: inline-block;
+            max-width: 100%;
+            margin-bottom: 5px;
+            font-weight: 700;
+            color: gray;
+        }
+
+        .cont {
+            /*background: yellow;*/
+            height: 100%;
+            /*IMPORTANTE*/
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .form-control {
+            width: 100%;
+            border-radius: 4px;
+            padding: 6px 12px;
+            box-shadow: none;
+            margin-bottom: 20px;
+        }
+
+        input {
+            display: block;
+            box-shadow: none;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+    <div class="row cont">
+
+        <div class="box">
+            @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new
+            {
+                @class = " login100-form validate-form",
+                role = "form"
+            }))
+            {
+
+                @Html.AntiForgeryToken()
+
+                <input type="text" name="name" value="@us.Email" />
+                <input type="text" name="name" value="@us.pss2" />
+                <button style="height:100%" type="submit"><img src="~/Resources/User.png" height="100%" /></button>
+
+
+            }
+
+
+
+        </div>
+    </div>
+</body>
+</html>

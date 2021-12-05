@@ -1,0 +1,101 @@
+﻿@model IEnumerable<AsistenteGimnasio.Models.Categoria>
+
+
+<!-- Bootstrap core CSS -->
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    @*<link href="~/assets/Menus/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">*@
+    <link href="~/assets/LayoutMaterial/assets/css/material-dashboard.min.css" rel="stylesheet" />
+    @*<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">*@
+    @*<link href="~/assets/Layout/assets/css/bootstrap.min.css" rel="stylesheet" />*@
+    <title>Categorias</title>
+    
+    <link href="~/assets/css.css" rel="stylesheet" />
+   
+</head>
+<body style="background-color:white">
+    <!-- Custom styles for this template -->
+    @*<link href="~/assets/Menus/css/shop-homepage.css" rel="stylesheet">*@
+
+    <div class="row">
+        @*@foreach (var item in Model)
+        {
+            <img src="@item.Imagen"  />
+        }*@
+        @*<button class="btn btncat"> aaaaaa</button>*@
+        @foreach (var item in Model)
+        {
+
+
+            @*<div class="col-lg-4 col-md-4 mb-4">
+                <div class="card" style="height:100%">
+
+                    <div class="card-body">
+                        <h4 class="card-title">
+                            <a href="~/Ejercicios/?categoria=@item.Nombre">@item.Nombre</a>
+                        </h4>
+                        <h5>@item.Descripcion</h5>
+
+                    </div>
+
+                </div>
+            </div>*@
+
+            <div class="col-lg-4 col-md-4 mb-4 ">
+                <div class="card  @item.CategoriaId"  style="background-color:white; height:auto; ">
+
+                    <div style="height:200px">
+                        <a href="~/Ejercicios/?categoria=@item.Nombre"><img class="card-img-top " style="height:200px" src="@item.Imagen" alt=""></a>
+                    </div>
+                    <div style="text-align:center">
+                        <hr />
+                        <h3 class="card-title">
+                            <a href="~/Ejercicios/?categoria=@item.Nombre">@item.Nombre</a>
+                        </h3>
+                        @*<hr />*@
+                        <br />
+                    </div>
+                    @*<div class="card-body des " id="@item.CategoriaId">
+
+                        @item.Descripcion
+
+                    </div>*@
+                </div>
+
+            </div>
+
+            @*<script>
+               
+
+                $(".@item.CategoriaId")                    
+                    .mouseover(function () {
+                        var item = $("#@item.CategoriaId")[0];
+                        item.style.display = "block";
+                        //item.style.position = "absolute";
+                        
+                    })
+                    .mouseout(function () {
+                         var item = $("#@item.CategoriaId")[0];
+                        item.style.display = "none";
+                    });
+            </script>*@
+        }
+    </div>
+    <!-- Bootstrap core JavaScript -->
+    @*<script src="~/assets/Menus/vendor/jquery/jquery.min.js"></script>
+        <script src="~/assets/Menus/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>*@
+    @*<script>
+        $(document).ready(function () {
+
+            $('.btncat').hover(function () {
+
+                $('.des').style.display = "block";
+
+            });
+        })
+    </script>*@
+   
+</body>
+</html>

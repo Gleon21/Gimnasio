@@ -1,0 +1,221 @@
+﻿@model AsistenteGimnasio.Models.Ejercicio
+
+@{
+    ViewBag.Title = "Editar";
+
+    bool videoweb = false;
+    string embedurl = null;
+
+
+}
+@if (Model.EnlaceVideo.Contains("http") || Model.Imagen.Contains(".com") || Model.Imagen.Contains("https://"))
+{
+    if (Model.EnlaceVideo.Contains("youtube"))
+    {
+        string[] separador = { "watch?v=" };
+        string[] urlv = Model.EnlaceVideo.Split(separador, System.StringSplitOptions.RemoveEmptyEntries);
+
+        embedurl = "https://www.youtube.com/embed/" + urlv[1];
+        videoweb = true;
+
+    }
+    if (Model.EnlaceVideo.Contains("mega"))
+    {
+        string[] separador = { "#!" };
+        string[] urlv = Model.EnlaceVideo.Split(separador, System.StringSplitOptions.RemoveEmptyEntries);
+
+        embedurl = "https://mega.nz/embed#!" + urlv[1];
+        videoweb = true;
+
+    }
+}
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+
+
+    <title></title>
+</head>
+<body>
+    @*<h2>Detailles</h2>
+        <hr />*@
+    <div class="row">
+
+        <div class="col-sm-8">
+
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="form-horizontal">
+                    <h5>Ejercicio</h5>
+                    <hr />
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    @Html.HiddenFor(model => model.EjercicioId)
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Nombre, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-12">
+                            @Html.EditorFor(model => model.Nombre, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Nombre, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <label for="Note">Descripción</label>
+                            <textarea class="form-control" name="Descripcion" id="Note" rows="3">@Model.Descripcion</textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.CategoriaId, "CategoriaId", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-12">
+                            @Html.DropDownList("CategoriaId", null, htmlAttributes: new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.CategoriaId, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Calorias, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-12">
+                            @Html.EditorFor(model => model.Calorias, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Calorias, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Duracion, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-12">
+                            @Html.EditorFor(model => model.Duracion, new { htmlAttributes = new { @class = "form-control"@*, @disabled = "disabled"*@ } })
+                            @Html.ValidationMessageFor(model => model.Duracion, "", new { @class = "text-danger " })
+                        </div>
+                    </div>
+                </div>
+                <div style="text-align:center">
+                    <button type="submit" class="btn btn-fill" style="background-color:#B57CDD; color:white; border-color:#B57CDD; cursor:pointer ">Guardar Cambios</button>
+                </div>
+            }
+
+
+
+
+
+
+
+        </div>
+        <div class="col-sm-4" style="border-left:2px solid #9965DB;">
+            <h4 style="text-align:center">Póster</h4>
+            <div>
+                @if (Model.Imagen != null)
+                {
+                    if (Model.Imagen.Contains("http") || Model.Imagen.Contains(".com") || Model.Imagen.Contains("https://"))
+                    {
+
+
+                        <img class="" src="@Model.Imagen" alt="" style="width:100%; ">
+
+                    }
+                    else
+                    {
+
+                        <img class="" src="~/Resources/Imagenes/@Model.Imagen" alt="" style="width:100%; ">
+                    }
+
+                }
+                else
+                {
+                    <img class="" src="~/Resources/No Imagen.png" alt="" style="width:100%; ">
+                }
+            </div>
+            <h4 style="text-align:center">Vídeo</h4>
+            <div style="margin-top:2%">
+                @if (Model.EnlaceVideo != null)
+                {
+
+
+                    if (videoweb)
+                    {
+                        <div class="embed-container">
+                            <iframe width="100%" height="56.26%" src="@embedurl?autoplay=1" frameborder="0" allow="autoplay" allowfullscreen></iframe>
+
+
+                        </div>
+                    }
+                    else
+                    {
+                        <video style="width:100%" class="contenedorv1" id="mivideo" poster="" autoplay="autoplay" controls>
+                            <source src="~/Resources/Videos/@Model.EnlaceVideo" type="video/ogg">
+
+                            Tu navegador no soporta el elemento
+                            <code>vídeo</code>
+                        </video>
+
+                    }
+                }
+                else
+                {
+                    <video style="width:100%" class="contenedorv1" id="mivideo" poster="~/Resources/No Video.png" autoplay="autoplay" controls>
+                        <source src="" type="video/ogg">
+                        Tu navegador no soporta el elemento
+                        <code>vídeo</code>
+                    </video>
+                }
+            </div>
+            <div style="text-align:center">
+                <a href="@Url.Action("EditarArchivos/"+Model.EjercicioId, "Ejercicios")" class="btn btn-info btn-fill" style="margin-top:2%; background-color:#8959BA; color:white; border-color:#8959BA; cursor:pointer">Cambiar Poster o Video</a>
+                @*<button class="btn btn-info btn-fill" > </button>*@
+            </div>
+
+
+
+        </div>
+
+
+
+    </div>
+    <style>
+        .embed-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+        }
+
+            .embed-container iframe {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+            }
+    </style>
+</body>
+</html>
+
+@*<h2>Details</h2>
+
+    <div>
+        <h4>Ejercicio</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.Categoria.Nombre)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Categoria.Nombre)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Nombre)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Nombre)
+            </dd>
+
+        </dl>
+    </div>
+    <p>
+        @Html.ActionLink("Edit", "Edit", new { id = Model.EjercicioId }) |
+        @Html.ActionLink("Back to List", "Index")
+    </p>*@

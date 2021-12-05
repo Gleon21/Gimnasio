@@ -1,0 +1,249 @@
+﻿@model IEnumerable<AsistenteGimnasio.Models.Ejercicio>
+
+@{
+    ViewBag.Title = "Estadisticas";
+    //Layout = null;
+}
+
+
+<script src="~/Scripts/Graficas/exporting.js"></script>
+<script src="~/Scripts/Graficas/highcharts.js"></script>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <style type="text/css">
+        .highcharts-figure, .highcharts-data-table table {
+            min-width: 320px;
+            max-width: 660px;
+            margin: 1em auto;
+        }
+
+        .highcharts-data-table table {
+            font-family: Verdana, sans-serif;
+            border-collapse: collapse;
+            border: 1px solid #EBEBEB;
+            margin: 10px auto;
+            text-align: center;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .highcharts-data-table caption {
+            padding: 1em 0;
+            font-size: 1.2em;
+            color: #555;
+        }
+
+        .highcharts-data-table th {
+            font-weight: 600;
+            padding: 0.5em;
+        }
+
+        .highcharts-data-table td, .highcharts-data-table th, .highcharts-data-table caption {
+            padding: 0.5em;
+        }
+
+        .highcharts-data-table thead tr, .highcharts-data-table tr:nth-child(even) {
+            background: #f8f8f8;
+        }
+
+        .highcharts-data-table tr:hover {
+            background: #f1f7ff;
+        }
+    </style>
+  
+</head>
+
+
+
+<body>
+
+    @*<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+        <script src="../../code/highcharts.js"></script>
+        <script src="../../code/modules/exporting.js"></script>
+        <script src="../../code/modules/export-data.js"></script>
+        <script src="../../code/modules/accessibility.js"></script>*@
+    <div id="graficas">
+        <div class="row">
+
+            <style type="text/css" media="print">
+
+
+                #parte1 {
+                    display: none;
+                    text-align: right;
+                }
+
+                #parte2 {
+                    text-align:center;
+                }
+            </style>
+            <div class="col-md-6"></div>
+           
+            <div class="col-md-6" id="parte1" style="text-align:right">
+                @*<button class="btn btn-fill btn2 float-md-right" style="background-color:#B57CDD; color:white; border-color:#B57CDD; cursor:pointer " type="button" onclick="javascript:imprim1(graficas);">
+            Imprimir
+            </button>*@
+
+                <a class="nav-link" href="#" onclick="javascript:imprim1(graficas);">
+                    <i class="material-icons">print</i>
+                    @*<p>Categorías</p>*@
+                </a>
+
+            </div>
+        </div>
+
+        <div class="row"  >
+            <div class="col-lg-6 col-md-6 mb-6"  >
+                <figure class="highcharts-figure" >
+                    <div id="container-circle"></div>
+                    <p class="highcharts-description">
+                        @*Los 5 ejercicios mas realizados por las personas*@
+                    </p>
+                </figure>
+            </div>
+            <div class="col-lg-6 col-md-6 mb-6">
+                <figure class="highcharts-figure">
+                    <div id="container-line"></div>
+                    <p class="highcharts-description">
+                        @*This chart shows how data labels can be added to the data series. This
+                            can increase readability and comprehension for small datasets.*@
+                    </p>
+                </figure>
+
+            </div>
+        </div>
+    </div>
+    @* Gráfico Circular *@
+    <script type="text/javascript">
+        // Build the chart
+        $(document).ready(function () {
+            $.getJSON("/Utilities/GetDataCircle", function (data) {
+
+                Highcharts.chart('container-circle', {
+                    chart: {
+                        plotBackgroundColor: null,
+                        plotBorderWidth: null,
+                        plotShadow: false,
+                        type: 'pie'
+                    },
+                    title: {
+                        text: 'Ejercicios Mas Realizados en @DateTime.Now.Year.ToString()'
+                    },
+                    tooltip: {
+                        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                    },
+                    accessibility: {
+                        point: {
+                            valueSuffix: '%'
+                        }
+                    },
+                    plotOptions: {
+                        pie: {
+                            allowPointSelect: true,
+                            cursor: 'pointer',
+                            dataLabels: {
+                                enabled: false
+                            },
+                            showInLegend: true
+                        }
+                    },
+                    series: [{
+                        name: 'Brands',
+                        colorByPoint: true,
+                        data: [{
+                            name: data.Ejercicio1,
+                            y: data.TEjercicio1,
+                            sliced: true,
+                            selected: true
+                        }, {
+                            name: data.Ejercicio2,
+                            y: data.TEjercicio2
+                        }, {
+                            name: data.Ejercicio3,
+                            y: data.TEjercicio3
+                        }, {
+                            name: data.Ejercicio4,
+                            y: data.TEjercicio4
+                        }, {
+                            name: data.Ejercicio5,
+                            y: data.TEjercicio5
+                        }]
+                    }]
+                });
+
+
+            });
+        });
+
+
+    </script>
+
+    @* Grafico lineas *@
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $.getJSON("/Utilities/GetDataLine/?periodo="+@DateTime.Now.Year, function (datos) {
+
+
+                Highcharts.chart('container-line', {
+                    chart: {
+                        type: 'line'
+                    },
+                    title: {
+                        text: 'Usuarios e inicios de sesiones mensuales'
+                    },
+                    subtitle: {
+                        text: 'Periodo: '+@DateTime.Now.Year
+                    },
+                    xAxis: {
+                        categories: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
+                    },
+                    yAxis: {
+                        title: {
+                            text: 'Sesiones'
+                        }
+                    },
+                    plotOptions: {
+                        line: {
+                            dataLabels: {
+                                enabled: true
+                            },
+                            enableMouseTracking: true
+                        }
+                    },
+                    series: [{
+                        name: 'Usuarios',
+                        data: datos.Usuarios
+                    }, {
+                        name: 'Inicios de sesión',
+                        data: datos.sesiones
+                    }]
+                });
+
+
+            });
+        });
+
+
+
+    </script>
+    @* Imprimir *@
+    <script>
+        function imprim1(graficas) {
+            var printContents = document.getElementById('graficas').innerHTML;
+            w = window.open();
+            w.document.write(printContents);
+            w.document.close(); // necessary for IE >= 10
+            w.focus(); // necessary for IE >= 10
+            w.print();
+            w.close();
+            return true;
+        }
+    </script>
+    
+
+</body>
+
+</html>

@@ -1,0 +1,140 @@
+﻿@using Microsoft.AspNet.Identity
+@using AsistenteGimnasio.Models
+@using System.Globalization;
+@using (Html.BeginForm("RegistrarPeso", "Account", FormMethod.Post))
+{
+    ApplicationDbContext db = new ApplicationDbContext();
+    string uid = User.Identity.GetUserId();
+    var peso = (from x in db.Saluds
+                where x.UserId == uid
+                select x).OrderByDescending(x => x.SaludId).FirstOrDefault();
+    if (peso != null)
+    {
+
+        
+
+
+        <div class="card-header">
+            <h4 class="card-title">Actualizar Peso</h4>
+        </div>
+        <div class="card-body">
+
+
+            <form>
+                <div class="row">
+                    <div>
+
+                    </div>
+
+                    <div class="col-md-12 ">
+
+
+                        <label for="Peso">Peso en libras</label>
+                        <input class="form-control" type="number" min="1" step="any" name="Peso" id="quantity" 
+ onKeyPress="return soloNumeros(event)" onKeyUp="pierdeFoco(this)" value="@peso.Peso.ToString()" />
+
+                    </div>
+                    <div class="col-md-12 ">
+
+
+                        <label for="Estatura">Estatura en cm</label>
+                        <input class="form-control" type="number" min="1" step="any" name="Estatura" id="Estatura" value="@peso.Estatura.ToString()" />
+
+                    </div>
+
+                    <div class="col-md-12 ">
+
+                        <label for="Fecha">Fecha de Registro</label>
+                        <input class=" form-control" disabled="" type="text" name="Fecha" id="Fecha" value="@peso.FechadeRegistro" />
+
+                    </div>
+                </div>
+                @{
+                    string fecha1 = peso.FechadeRegistro;
+                    DateTime fecha = DateTime.ParseExact(peso.FechadeRegistro, "MM/dd/yyyy", CultureInfo.InvariantCulture);
+                }
+                @if (fecha.Month != DateTime.Now.Month)
+                {
+                    <div style="text-align:center; margin-top:5%">
+                        <button type="submit" class="btn btn-info btn-fill">Actualizar Peso</button>
+                    </div>
+                }
+                else
+                {
+                    <div style="text-align:center; margin-top:5%">
+                        <button type="submit" name="actualizarPeso" disabled="" class="btn btn-info btn-fill">Actualizar Peso</button>
+                        <label for="actualizarPeso">Ya hay un peso registrado este mes</label>
+                    </div>
+                }
+                <div class="clearfix"></div>
+            </form>
+        </div>
+
+    }
+    else
+    {
+        <div class="card-header">
+            <h4 class="card-title">Actualizar Peso</h4>
+        </div>
+        <div class="card-body">
+
+
+            <form>
+                <div class="row">
+                    <div>
+
+                    </div>
+
+                    <div class="col-md-12 ">
+
+
+                        <label for="Peso">Peso en libras</label>
+                        <input class="form-control" type="number" step="any" name="Peso" id="quantity" 
+ onKeyPress="return soloNumeros(event)" onKeyUp="pierdeFoco(this)" value="1" />
+
+                    </div>
+                    <div class="col-md-12 ">
+
+
+                        <label for="Estatura">Estatura</label>
+                        <input class="form-control" type="number" step="any" name="Estatura" id="Estatura" value="0" />
+
+                    </div>
+
+                    <div class="col-md-12 ">
+
+                        <label for="Fecha">Fecha de Registro</label>
+                        <input class=" form-control" disabled="" type="text" name="Fecha" id="Fecha" value="@DateTime.Now.ToString("MM/dd/yyyy",null)" />
+
+                    </div>
+                </div>
+
+
+                <div style="text-align:center; margin-top:5%">
+                    <button type="submit" class="btn btn-info btn-fill">Actualizar Peso</button>
+                </div>
+
+
+                <div class="clearfix"></div>
+            </form>
+        </div>
+
+    }
+
+
+
+}
+
+        <script>
+
+            function soloNumeros(e) {
+                var key = window.Event ? e.which : e.keyCode;
+                return ((key >= 48 && key <= 57) || (key == 8))
+            }
+
+            function pierdeFoco(e) {
+                var valor = e.value.replace(/^0*/, '');
+                e.value = valor;
+            }
+
+        </script>

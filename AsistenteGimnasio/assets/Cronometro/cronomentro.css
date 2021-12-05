@@ -1,0 +1,70 @@
+﻿
+@import url('https://fonts.googleapis.com/css2?family=Merriweather&display=swap');
+
+
+
+* {
+}
+
+.mn, .hr, .sg {
+    height: 100%;
+    font-family: 'Merriweather', serif;
+}
+
+
+
+.time {
+    background-color: #9C27B0;
+    color: white;
+    margin-left: 3px;
+    /*font-size: 80px;*/
+    height: 220px;
+}
+
+.buttons-timer {
+    text-align: center;
+}
+
+.input-cr {
+    font-family: 'Merriweather', serif;
+    border: 0;
+    color: white;
+    background-color: #9C27B0;
+    font-size: 200px;
+    height: 200px;
+    width: 100%;
+    text-align: center;
+}
+
+.buttons-timer button {
+    background-color: #9C27B0;
+    color: white;
+    border-color: #9C27B0;
+    margin-left: 45px;
+    margin-top: 100px;
+    height: 100px;
+    width: 300px;
+    margin-bottom: 50px;
+    font-size: 25px;
+}
+
+    .buttons-timer button:hover {
+        background-color: #6920B4;
+        color: white;
+        border-color: #6920B4;
+    }
+
+    .buttons-timer button:focus {
+        background-color: #9C27B0;
+        color: white;
+        border-color: #9C27B0;
+    }
+
+
+    .buttons-timer button:active {
+        background-color: #38056D;
+        color: white;
+        border-color: #38056D;
+    }
+
+   

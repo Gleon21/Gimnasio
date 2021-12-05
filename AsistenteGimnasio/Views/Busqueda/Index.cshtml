@@ -1,0 +1,11 @@
+﻿@model IEnumerable<AsistenteGimnasio.Models.Ejercicio>
+
+@{
+    ViewBag.Title = "Resultados";
+}
+
+<h3>Resultados para : @ViewData["Bus"]</h3>
+<hr style="background-color:mediumpurple" />
+@Html.Partial("_BusquedaEjercicios")
+<hr style="background-color:mediumpurple" />
+@Html.Partial("_BusquedaCategorias")

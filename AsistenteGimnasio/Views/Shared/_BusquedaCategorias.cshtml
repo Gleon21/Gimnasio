@@ -1,0 +1,43 @@
+﻿@using Microsoft.AspNet.Identity
+@using AsistenteGimnasio.Models
+
+@{
+    ApplicationDbContext db = new ApplicationDbContext();
+    string fil = ViewData["Bus"].ToString();
+    var CATEGORIAS = (from x in db.Categorias
+                      where x.Nombre.Contains(fil)
+                      select x).ToList();
+}
+
+<div class="row">
+   
+    @foreach (var item in CATEGORIAS)
+    {
+
+
+       
+
+        <div class="col-lg-4 col-md-4 mb-4">
+            <div class="card" style="background-color:white; height:500px; ">
+
+                <div style="height:200px">
+                    <a href="~/Ejercicios/?categoria=@item.Nombre"><img class="card-img-top" style="height:200px" src="@item.Imagen" alt=""></a>
+                </div>
+                <div style="text-align:center">
+                    <hr />
+                    <h3 class="card-title">
+                        <a href="~/Ejercicios/?categoria=@item.Nombre">@item.Nombre</a>
+                    </h3>
+                    <hr />
+                </div>
+                <div class="card-body">
+
+                    @item.Descripcion
+
+                </div>
+            </div>
+
+        </div>
+
+    }
+</div>

@@ -1,0 +1,256 @@
+﻿@using AsistenteGimnasio.Models;
+@model RegisterViewModel
+@{
+    ViewBag.Title = "Registro";
+    Layout = null;
+}
+<html>
+<head>
+    <!-- Required meta tags-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    @*<meta name="description" content="Colorlib Templates">
+        <meta name="author" content="Colorlib">
+        <meta name="keywords" content="Colorlib Templates">*@
+
+    <!-- Title Page-->
+    <title>ENERGYM Registro</title>
+
+    <!-- Icons font CSS-->
+
+    <link href="~/assets/Register/vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
+    <link href="~/assets/Register/vendor/font-awesome-4.7/css/font-awesome.min.css" rel="stylesheet" media="all">
+    <!-- Font special for pages-->
+    <link href="https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+    <!-- Vendor CSS-->
+    <link href="~/assets/Register/vendor/select2/select2.min.css" rel="stylesheet" media="all">
+    <link href="~/assets/Register/vendor/datepicker/daterangepicker.css" rel="stylesheet" media="all">
+
+    <!-- Main CSS-->
+    <link href="~/assets/Register/css/main.css" rel="stylesheet" media="all">
+</head>
+<body>
+
+
+
+    @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    {
+        @Html.AntiForgeryToken()
+        <div class="page-wrapper bg-gra-02 p-t-130 p-b-100 font-poppins">
+            <div class="wrapper wrapper--w680">
+                <div class="card card-4">
+                    <div class="card-body">
+                        <h2 class="title">Registrarse</h2>
+
+                        <form method="POST">
+                            <div class="row row-space">
+                                <div class="col-2">
+                                    <div class="input-group">
+                                        <label class="label">Nombre</label>
+                                        @*<input class="input--style-4" type="text" name="Nombre">*@
+                                        @Html.TextBoxFor(m => m.Nombre, new { @class = " input--style-4", pattern = "[a-zA-Z ]{2,254}", title = "No se permiten números ni símbolos en el nombre y debe contener mas de 2 caracteres" })
+
+
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <div class="input-group">
+                                        <label class="label">Apellido</label>
+                                        @*<input class="input--style-4" type="text" name="Apellido">*@
+                                        @Html.TextBoxFor(m => m.Apellido, new { @class = " input--style-4", pattern = "[a-zA-Z ]{2,254}", title = "No se permiten números ni símbolos en el apellido y debe contener mas de 2 caracteres" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row row-space">
+                                <div class="col-2">
+                                    <div class="input-group">
+                                        <label class="label">Correo Electrónico</label>
+                                        @*<input class="input--style-4" type="email" name="Correo Electronico">*@
+                                        @Html.TextBoxFor(m => m.Email, new { @class = " input--style-4" })
+                                    </div>
+                                </div>
+
+                                <div class="col-2">
+                                    <div class="input-group">
+                                        <label class="label">Fecha de Nacimiento</label>
+                                        <div class="input-group-icon">
+                                            @*<input class="input--style-4 js-datepicker" type="text" name="Fecha_Nacimiento">*@
+                                            @Html.TextBoxFor(m => m.Fecha_Nacimiento, new { @class = " input--style-4 js-datepicker", id = "Fecha_nac", onblur = "validar(this.value)" })
+                                            <i class="zmdi zmdi-calendar-note input-icon js-btn-calendar"></i>
+                                            <span id="nfec" style="text-align:center;color:red;display:none">Fecha invalida</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+
+                            </div>
+                            <div class="row row-space">
+
+                                <div class="col-2">
+                                    <div class="input-group">
+                                        <label class="label">Dirección</label>
+                                        @Html.TextBoxFor(m => m.Direccion, new { @class = " input--style-4" })
+                                        @*<input class="input--style-4" type="text" name="Direccion">*@
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <div class="input-group">
+                                        <label class="label">Sexo</label>
+                                        <div class="p-t-10">
+                                            <label class="radio-container m-r-45">
+                                                Masculino
+                                                @Html.TextBoxFor(m => m.Sexo, new { @type = "radio", @checked = "true", @Value = "Masculino" })
+                                                @*<input type="radio" checked="checked" value="Masculino" name="Sexo">*@
+                                                <span class="checkmark"></span>
+                                            </label>
+                                            <label class="radio-container">
+                                                Femenino
+                                                @*<input type="radio" value="Femenino" name="Sexo">*@
+                                                @Html.TextBoxFor(m => m.Sexo, new { @type = "radio", @Value = "Femenino" })
+                                                <span class="checkmark"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row row-space">
+                                <div class="col-2">
+                                    <div class="input-group">
+                                        <label class="label">Contraseña</label>
+                                        @Html.TextBoxFor(m => m.Password, new { @class = " input--style-4", @type = "password" })
+                                        @*<input class="input--style-4" type="password" name="Contraseña">*@
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <div class="input-group">
+                                        <label class="label">Confirmar Contraseña</label>
+                                        @Html.TextBoxFor(m => m.ConfirmPassword, new { @class = " input--style-4", @type = "password" })
+                                        @*<input class="input--style-4" type="password" name="Confirmar Contraseña">*@
+
+                                    </div>
+                                </div>
+
+                                <span style="text-align:center; color:gray">La contraseña debe incluir al menos una mayúscula y un símbolo</span>
+
+                            </div>
+                            @*<div class="col-2">
+                                    <div class="input-group">
+                                        <label class="label">Apellido</label>
+
+                                        @Html.TextBoxFor(m => m.Sexo, new { @class = " input--style-4" })
+                                    </div>
+                                </div>*@
+                            @*<div class="input-group">
+                                    <label class="label">Subject</label>
+                                    <div class="rs-select2 js-select-simple select--no-search">
+                                        <select name="subject">
+                                            <option disabled="disabled" selected="selected">Choose option</option>
+                                            <option>Subject 1</option>
+                                            <option>Subject 2</option>
+                                            <option>Subject 3</option>
+                                        </select>
+                                        <div class="select-dropdown"></div>
+                                    </div>
+                                </div>*@
+                            <div class="p-t-15" style="text-align:center">
+                                <button id="btn_reg" class="btn btn--radius-2 btn--blue" type="submit">Registrarse</button>
+                            </div>
+
+                            @Html.ValidationSummary("", new { @class = "text-danger" })
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    }
+        
+    <script>
+        function validarFormatoFecha(campo) {
+            var RegExPattern = /^\d{1,2}\/\d{1,2}\/\d{2,4}$/;
+            if ((campo.match(RegExPattern)) && (campo != '')) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        function existeFecha(fecha) {
+            var fechaf = fecha.split("/");
+            var day = fechaf[0];
+            var month = fechaf[1];
+            var year = fechaf[2];
+            var date = new Date(year, month, '0');
+            if ((day - 0) > (date.getDate() - 0)) {
+                return false;
+            }
+            return true;
+        }
+
+        function existeFecha2(fecha) {
+            var fechaf = fecha.split("/");
+            var d = fechaf[0];
+            var m = fechaf[1];
+            var y = fechaf[2];
+            return m > 0 && m < 13 && y > 0 && y < 32768 && d > 0 && d <= (new Date(y, m, 0)).getDate();
+        }
+
+        function validarFechaMenorActual(date) {
+            var x = new Date();
+            var fecha = date.split("/");
+            x.setFullYear(fecha[2], fecha[1] - 1, fecha[0]);
+            var today = new Date();
+
+            if (x >= today)
+                return false;
+            else
+                return true;
+        }
+
+        function validar(fecha) {
+            
+
+            
+            if (validarFormatoFecha(fecha)) {
+                if (existeFecha(fecha)) {
+                    if (validarFechaMenorActual(fecha)) {
+                        var x = document.getElementById("nfec");
+                        x.style.display = "none";
+                        document.getElementById("btn_reg").disabled = false;
+                    }
+                    else {
+                        var x = document.getElementById("nfec");
+                        x.style.display = "block";
+                        document.getElementById("btn_reg").disabled = "disabled"
+                    }
+                } else {
+                    var x = document.getElementById("nfec");
+                    x.style.display = "block";
+                    document.getElementById("btn_reg").disabled = "disabled"
+                }
+            } else {
+                var x = document.getElementById("nfec");
+                x.style.display = "block";
+                document.getElementById("btn_reg").disabled = "disabled"
+                
+               
+            }
+        }
+    </script>
+
+
+
+    <script src="~/assets/Register/vendor/jquery/jquery.min.js"></script>
+    <!-- Vendor JS-->
+    <script src="~/assets/Register/vendor/select2/select2.min.js"></script>
+    <script src="~/assets/Register/vendor/datepicker/moment.min.js"></script>
+    <script src="~/assets/Register/vendor/datepicker/daterangepicker.js"></script>
+    <!-- Main JS-->
+    <script src="~/assets/Register/js/global.js"></script>
+
+</body>
+</html>

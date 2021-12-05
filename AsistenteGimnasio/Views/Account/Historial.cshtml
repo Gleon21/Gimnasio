@@ -1,0 +1,113 @@
+﻿@using Microsoft.AspNet.Identity
+@using AsistenteGimnasio.Models
+<link href="~/assets/css.css" rel="stylesheet" />
+@{
+    ApplicationDbContext db = new ApplicationDbContext();
+
+
+    var UsId = User.Identity.GetUserId();
+
+    var reg = (from x in db.RegistroEjercicios
+               where x.UserId == UsId
+               select x).OrderByDescending(x => x.RegistroEjercicioId).ToList();
+
+
+
+    ViewBag.Title = "Historial";
+}
+
+<div>
+
+
+    <hr />
+    <div class="row">
+
+        <div class="col-md-2">
+
+        </div>
+        <div class="col-md-1">
+
+        </div>
+        <div class="col-md-2">
+            <h4>Nombre</h4>
+
+        </div>
+        <div class="col-md-1">
+
+        </div>
+        <div class="col-md-2">
+            <h4>Hora</h4>
+        </div>
+        <div class="col-md-2">
+            <h4>Tiempo</h4>
+        </div>
+
+    </div>
+    <hr />
+
+</div>
+
+<div style="overflow-y :auto; overflow-x:hidden;">
+    @foreach (var item in reg)
+    {
+
+        var ej = (from x in db.Ejercicios
+                  where x.EjercicioId == item.EjercicioId
+                  select x).First();
+
+        <div class="row " style="background-color:aliceblue">
+
+            <div class="col-md-2">
+                @if (ej.Imagen != null)
+                {
+                    if (ej.Imagen.Contains("http") || ej.Imagen.Contains(".com"))
+                    {
+                        <div style="height:100px">
+                            <a href="~/Ejercicios/Preview/@ej.EjercicioId"><img class="card-img-top" src="@ej.Imagen" height="100%"></a>
+                        </div>
+
+
+
+                    }
+                    else
+                    {
+                        <div style="height:100px">
+                            <a href="~/Ejercicios/Preview/@ej.EjercicioId"><img class="card-img-top" src="~/Resources/Imagenes/@ej.Imagen" height="100%"></a>
+                        </div>
+
+                    }
+                }
+                else
+                {
+                    <div style="height:100px">
+                        <a href="~/Ejercicios/Preview/@ej.EjercicioId"><img class="card-img-top" src="~/Resources/No Imagen.png" height="100%"></a>
+                    </div>
+                }
+            </div>
+            <div class="col-md-1">
+
+            </div>
+            <div class="col-md-2">
+                @if (ej.Nombre != "Cronometro")
+                {
+                    <a href="~/Ejercicios/Preview/@ej.EjercicioId"> <h3> @ej.Nombre</h3> </a>
+                }
+                else
+                {
+                    <a href="@Url.Action("Timer","Ejercicios")"> <h3> @ej.Nombre</h3> </a>
+                }
+            </div>
+            <div class="col-md-1">
+
+            </div>
+            <div class="col-md-2">
+                <h3>@item.HoraInicio</h3>
+            </div>
+            <div class="col-md-2">
+                <h3>@item.Tiempo</h3>
+            </div>
+
+        </div>
+        <hr />
+    }
+</div>

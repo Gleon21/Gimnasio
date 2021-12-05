@@ -1,0 +1,70 @@
+﻿@using Microsoft.AspNet.Identity
+@using AsistenteGimnasio.Models
+
+@{
+    ApplicationDbContext db = new ApplicationDbContext();
+    string userId = User.Identity.GetUserId();
+    var list = (from x in db.notificaciones
+                where x.UserId == userId && x.Activa == true
+                select x).Take(5).ToList();
+}
+
+
+
+<a class="nav-link" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <i class="material-icons">notifications</i>
+    @if (list.Count() > 0)
+    {
+        <span class="notification">@list.Count()</span>
+
+    }
+    <p class="d-lg-none d-md-block">
+        Some Actions
+    </p>
+</a>
+<div class="dropdown-menu dropdown-menu-right" id="notifications" style="color:blue" aria-labelledby="navbarDropdownMenuLink">
+    @{
+        if (list.Count() != 0)
+        {
+            foreach (var item in list)
+            {
+
+
+                var urlfix = item.RedireccionUrl.Split('/');
+                <a class="dropdown-item" type="submit" href="@Url.Action("ValidarNotificacion/" + item.NotificacionId, "Utilities")"> @item.Titulo</a>
+
+
+
+
+            }
+        }
+        else
+        {
+            <a class="dropdown-item" href="#">No hay notificaciones :)</a>
+        }
+    }
+
+    @*<a class="dropdown-item" href="#">Mike John responded to your email</a>
+        <a class="dropdown-item" href="#">You have 5 new tasks</a>
+        <a class="dropdown-item" href="#">You're now friend with Andrew</a>
+        <a class="dropdown-item" href="#">Another Notification</a>
+        <a class="dropdown-item" href="#">Another One</a>*@
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

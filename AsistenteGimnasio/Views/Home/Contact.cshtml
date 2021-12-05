@@ -1,0 +1,214 @@
+﻿@section scripts{
+
+    <script src="~/Scripts/jquery.signalR-2.4.1.js"></script>
+    <script src="/signalr/hubs"></script>
+    <script>
+
+
+
+    </script>
+
+    <script type="text/javascript">
+
+
+
+
+        //if ($('#displayname').val() != "guet")) {
+        $(function () {
+
+            var chat = $.connection.chatHub;
+
+
+            chat.client.sendChat = function (name, message) {
+
+
+                var divname = $("<div />").text(name).html();
+                var divmessage = $("<div />").text(message).html();
+                var a = "//img hola que hace";
+
+                if (message.includes("//img") == true) {
+
+
+
+                    var urli = divmessage.split(" ");
+
+                    var divimg = $("<div />").text(urli[1]).html();
+
+                    //var MediaUrl = urli[0];
+
+
+
+                    $("#discussion").append("   <li class='media'>\
+                                                                    <a href='#' class='pull-left'>\
+                                                                        <img src='https://bootdey.com/img/Content/user_1.jpg' alt='' class='img-circle'>\
+                                                                    </a>\
+                                                                    <div class='media-body'>\
+                                                                        <span class='text-muted pull-right'>\
+                                                                            <small class='text-muted'>30 min ago</small>\
+                                                                        </span>\
+                                                                        <strong class='text-success' style='margin-left:5px;'>"+ divname + "</strong>\
+                                                                      <div style='height:300px; width:100%'>\
+                                                                    <img src='"+ divimg + "' style='margin-left:5px; height:100%; width:auto  ' />\
+                                                                </div>\
+                                                                    </div>\
+                                                                </li>");
+                }
+                else {
+                    $("#discussion").append("   <li class='media'>\
+                                                                    <a href='#' class='pull-left'>\
+                                                                        <img src='https://bootdey.com/img/Content/user_1.jpg' alt='' class='img-circle'>\
+                                                                    </a>\
+                                                                    <div class='media-body'>\
+                                                                        <span class='text-muted pull-right'>\
+                                                                            <small class='text-muted'>30 min ago</small>\
+                                                                        </span>\
+                                                                        <strong class='text-success' style='margin-left:5px;'>"+ divname + "</strong>\
+                                                                        <p style='margin-left:5px;'>\
+                                                                            "+ divmessage + "\
+                                                                        </p>\
+                                                                    </div>\
+                                                                </li>");
+
+
+                }
+                //$("#discussion").append("<li><strong>" + divname + ": <strong>" + divmessage + "</li>");
+
+                if (divmessage == "//ClearMessages") {
+                    eliminarMensajes();
+                }
+
+                if ($("#valor").val() == "true") {
+                    $("#panel-body").animate({ scrollTop: $('#panel-body').prop("scrollHeight") }, 1000);
+                    ocultarNotificacion();
+
+                }
+                else {
+                    nuevomensaje();
+                }
+
+
+            };
+
+            //var nameOwner = prompt("Escribe tu nombre:", "");
+            //$("#displayname").val(nameOwner);
+
+
+
+            ocultarNotificacion();
+            $("#panel-body").animate({ scrollTop: $('#panel-body').prop("scrollHeight") }, 1000);
+
+            $("#message").focus();
+
+            $.connection.hub.start().done(function () {
+                $("#sendmessage").click(function () {
+
+                    if ($('#displayname').val() == "guest") {
+
+                        var nameOwner = prompt("Escribe tu nombre para poder enviar mensajes:", "");
+                        $('#displayname').val(nameOwner);
+
+
+                    }
+                    else {
+
+                        var nameOwner = $("#displayname").val();
+                        var userId = $("#displayId").val();
+                        var messageText = $("#message").val();
+
+
+                        chat.server.send(userId, nameOwner, messageText);
+
+                        $("#message").val("").focus();
+
+                        $("#panel-body").animate({ scrollTop: $('#panel-body').prop("scrollHeight") }, 1000);
+                        //var valor = document.getElementById('panel-body').scrollTop;
+                        //$("#valor").val(valor);
+                    }
+                });
+                $('#message').keypress(function (event) {
+
+
+                    var keycode = (event.keyCode ? event.keyCode : event.which);
+                    if (keycode == '13') {
+                        if ($('#displayname').val() == "guest") {
+                            var nameOwner = prompt("Escribe tu nombre para poder enviar mensajes:", "");
+                            $('#displayname').val(nameOwner);
+                        }
+                        else {
+                            var nameOwner = $("#displayname").val();
+                            var userId = $("#displayId").val();
+                            var messageText = $("#message").val();
+
+
+                            chat.server.send(userId, nameOwner, messageText);
+
+                            $("#message").val("").focus();
+
+                            $("#panel-body").animate({ scrollTop: $('#panel-body').prop("scrollHeight") }, 1000);
+                        }
+
+                    }
+                    event.stopPropagation();
+                });
+
+
+            })
+
+        })
+
+
+
+
+        function eliminarMensajes() {
+            var chat = $.connection.chatHub;
+            chat.server.deleteAllC();
+            //<ul class="media-list" id="discussion">
+            $("#discussion").remove();
+            $("#panel-body").append("<ul class='media-list' id='discussion'></ul>");
+        }
+
+        function AutoScroll() {
+            let element = document.getElementById("panel-body");
+
+            if (element.offsetHeight + element.scrollTop >= element.scrollHeight - 150) {
+
+                $("#valor").val("true");
+                ocultarNotificacion();
+            }
+            else {
+                //alert("saliendo");
+                $("#valor").val("false");
+            }
+        }
+
+        function ocultarNotificacion() {
+            $("#nmensaje").hide();
+
+
+        }
+        var nmensajes = 0;
+        function nuevomensaje() {
+
+            nmensajes++;
+            $("#nmensaje").show();
+            $("#nmen").remove();
+            $("#nmensaje").append(" <strong id='nmen'> tiene " + nmensajes + " mensajes nuevos </strong> ")
+
+        }
+        function final() {
+
+
+            ocultarNotificacion();
+            nmensajes = 0;
+            $("#panel-body").animate({ scrollTop: $('#panel-body').prop("scrollHeight") }, 1000);
+            $("#message").focus();
+        }
+        //}
+
+
+        function Alerta1() {
+            alert('Inicia sesion para poder enviar mensajes');
+        }
+    </script>
+
+}

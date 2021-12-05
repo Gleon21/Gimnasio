@@ -1,0 +1,383 @@
+﻿<!DOCTYPE HTML>
+@{
+    ViewBag.Title = "ENERGYM";
+}
+@if (User.Identity.IsAuthenticated == false)
+{
+    Layout = null;
+}
+@using Microsoft.AspNet.Identity
+@using AsistenteGimnasio.Models
+@using System.Linq
+@using AsistenteGimnasio.Metodos
+@using System.Globalization
+
+@{
+    string ImgDesayuno = "";
+    ApplicationDbContext db = new ApplicationDbContext();
+    Receta Desayuno = new Receta();
+    Receta Almuerzo = new Receta();
+    Receta cena = new Receta();
+    decimal horasActividad = 0;
+
+
+
+    if (User.Identity.IsAuthenticated)
+    {
+
+        string UserId = User.Identity.GetUserId();
+
+
+        Desayuno = (from x in db.Recetas
+                    where x.TiempoComidaId == 1
+                    select x).ToList().OrderBy(x => Guid.NewGuid()).FirstOrDefault();
+
+        ImgDesayuno = "/Resources/Imagenes/" + Desayuno.Imagen;
+        if (Desayuno.Imagen.Contains("http://") || Desayuno.Imagen.Contains("https://"))
+        {
+            ImgDesayuno = Desayuno.Imagen;
+        }
+
+
+        Almuerzo = (from x in db.Recetas
+                    where x.TiempoComidaId == 2
+                    select x).ToList().OrderBy(x => Guid.NewGuid()).FirstOrDefault();
+
+        cena = (from x in db.Recetas
+                where x.TiempoComidaId == 3
+                select x).ToList().OrderBy(x => Guid.NewGuid()).FirstOrDefault();
+
+
+        var listaHoras = (from x in db.RegistroEjercicios
+                          where x.UserId == UserId
+                          select x).ToList();
+        Metodos metodos = new Metodos();
+        foreach (var item in listaHoras)
+        {
+
+
+            if (DateTime.ParseExact(item.Fecha, "dd/MM/yyyy", null).Month == DateTime.Now.Month)
+            {
+                horasActividad += metodos.ObtenerHoras(item.Tiempo);
+            }
+
+        }
+
+    }
+
+
+
+
+}
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ENERGYM</title>
+    @if (User.Identity.IsAuthenticated == false)
+    {
+        <style>
+            .button {
+                background-color: #4CAF50; /* Green */
+                border: none;
+                color: white;
+                padding: 16px 32px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 16px;
+                margin: 4px 2px;
+                transition-duration: 0.4s;
+                cursor: pointer;
+            }
+
+            .button1 {
+                background-color: transparent;
+                color: white;
+                border: 2px solid #9C27B0;
+                font-size: 100px;
+            }
+
+                .button1:hover {
+                    background-color: #9C27B0;
+                    color: white;
+                }
+
+            .button2 {
+                background-color: white;
+                color: black;
+                border: 2px solid #008CBA;
+            }
+
+                .button2:hover {
+                    background-color: #008CBA;
+                    color: white;
+                }
+
+            .button3 {
+                background-color: white;
+                color: black;
+                border: 2px solid #f44336;
+            }
+
+                .button3:hover {
+                    background-color: #f44336;
+                    color: white;
+                }
+
+            .button4 {
+                background-color: white;
+                color: black;
+                border: 2px solid #e7e7e7;
+            }
+
+                .button4:hover {
+                    background-color: #e7e7e7;
+                }
+
+            .button5 {
+                background-color: white;
+                color: black;
+                border: 2px solid #555555;
+            }
+
+                .button5:hover {
+                    background-color: #555555;
+                    color: white;
+                }
+        </style>
+        <style>
+            #cabecera {
+                width: 100%;
+                height: 500px;
+            }
+
+            #video {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: auto;
+                z-index: -10;
+                visibility: visible;
+            }
+
+            h2 {
+                color: white;
+                text-shadow: 4px 4px 4px #333;
+                text-align: center;
+                margin-top: 200px;
+            }
+
+            a:link {
+                text-decoration: none;
+                color: white;
+            }
+        </style>
+    }
+
+    <style type="text/css">
+        .highcharts-figure, .highcharts-data-table table {
+            min-width: 360px;
+            max-width: 800px;
+            margin: 1em auto;
+        }
+
+        .highcharts-data-table table {
+            font-family: Verdana, sans-serif;
+            border-collapse: collapse;
+            border: 1px solid #EBEBEB;
+            margin: 10px auto;
+            text-align: center;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .highcharts-data-table caption {
+            padding: 1em 0;
+            font-size: 1.2em;
+            color: #555;
+        }
+
+        .highcharts-data-table th {
+            font-weight: 600;
+            padding: 0.5em;
+        }
+
+        .highcharts-data-table td, .highcharts-data-table th, .highcharts-data-table caption {
+            padding: 0.5em;
+        }
+
+        .highcharts-data-table thead tr, .highcharts-data-table tr:nth-child(even) {
+            background: #f8f8f8;
+        }
+
+        .highcharts-data-table tr:hover {
+            background: #f1f7ff;
+        }
+
+        .tarjeta {
+            height: 200px;
+        }
+    </style>
+</head>
+@if (User.Identity.IsAuthenticated)
+{
+
+    <body>
+
+        <script src="~/Scripts/Graficas/exporting.js"></script>
+        <script src="~/Scripts/Graficas/highcharts.js"></script>
+
+        <div class="row" id="refresh" name="refresh" style="margin-top:-3%">
+            <div class="col-md-4 col-lg-6 mb-4">
+                <div class="card sombra-estilo-1">
+                    <figure class="highcharts-figure">
+                        <div id="container-line" class="tarjeta"></div>
+                        @*<p class="highcharts-description">
+
+                            </p>*@
+                    </figure>
+                </div>
+
+            </div>
+
+            <div class="col-md-4 col-lg-6 mb-4" style="height:225px" >
+                <div class="card sombra-estilo-1" style="height:100%">
+                  
+                    <div class="card-header" style="text-align:center"><h3>Horas de actividad este mes</h3></div>
+                    <b style="text-align:center">@CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(DateTime.Now.Month)</b>
+                    <div class=" card-body" style="text-align:center"><b style="text-align:center"><h1 style="text-align:center">@decimal.Round(horasActividad, 2) Horas</h1></b></div>
+                </div>
+            </div>
+        </div>
+   
+
+
+
+
+
+        @* Gráfico líneas Peso *@
+        <script type="text/javascript">
+
+        $(document).ready(function () {
+            $.getJSON("/Home/GetDataLinePesos/?periodo="+@DateTime.Now.Year, function (datos) {
+
+
+                Highcharts.chart('container-line', {
+                    chart: {
+                        type: 'line'
+                    },
+                    title: {
+                        text: 'HISTORIAL DE PESO'
+                    },
+                    subtitle: {
+                        text: 'Período: ' +@DateTime.Now.Year
+
+                    },
+                    xAxis: {
+                        categories: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
+                    },
+                    yAxis: {
+                        title: {
+                            text: 'Peso'
+                        }
+                    },
+                    plotOptions: {
+                        line: {
+                            dataLabels: {
+                                enabled: true
+                            },
+                            enableMouseTracking: true
+                        }
+                    },
+                    series: [{
+                        name: 'Historial',
+                        data: datos.Pesos
+                    }]
+                });
+
+
+            });
+        });
+
+
+
+        </script>
+
+        @* Grafico lineas Estatura *@
+        <script type="text/javascript">
+
+        $(document).ready(function () {
+            $.getJSON("/Home/GetDataLineHoras/?periodo="+@DateTime.Now.Year, function (datos) {
+
+
+                Highcharts.chart('container-lineActvidad', {
+                    chart: {
+                        type: 'line'
+                    },
+                    title: {
+                        text: 'Historial de atividad'
+                    },
+                    subtitle: {
+                        text: 'Período: ' +@DateTime.Now.Year
+
+                    },
+                    xAxis: {
+                        categories: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
+                    },
+                    yAxis: {
+                        title: {
+                            text: 'Horas'
+                        }
+                    },
+                    plotOptions: {
+                        line: {
+                            dataLabels: {
+                                enabled: true
+                            },
+                            enableMouseTracking: true
+                        }
+                    },
+                    series: [{
+                        name: 'Historial',
+                        data: datos.Pesos
+                    }]
+                });
+
+
+            });
+        });
+
+
+
+        </script>
+
+
+
+    </body>
+}
+else
+{
+    <body>
+        <div id="cabecera">
+            <video id="video" autoplay="" loop="" muted="" class="w-100 hidden-lg-down">
+                <source src="https://www.ictiva.com/homes/video/video-landing.webm" type="video/webm">
+                <source src="https://www.ictiva.com/homes/video/video-landing.mp4" type="video/mp4">
+                Your browser does not support HTML5 video.
+            </video>
+
+            <h2> @*<a class="btn btn-default" href="Account/Login">Iniciar sesión</a>*@    <a href="@Url.Action("Login","Account")" class="button button1">Iniciar Sesion</a>  </h2>
+        </div>
+        <h4 style="color:white">ENERGYM</h4>
+
+
+
+    </body>
+
+
+
+
+
+}
+</html>

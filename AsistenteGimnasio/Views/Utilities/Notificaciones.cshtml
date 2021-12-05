@@ -1,0 +1,77 @@
+﻿@*@using Microsoft.AspNet.Identity
+    @using AsistenteGimnasio.Models
+
+    @{
+        ApplicationDbContext db = new ApplicationDbContext();
+        string userId = User.Identity.GetUserId();
+        var list = (from x in db.notificaciones
+                    where x.UserId == userId && x.Activa == true
+                    select x).Take(5).ToList();
+    }
+
+    <a class="nav-link" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <i class="material-icons">notifications</i>
+        @if (list.Count() > 0)
+        {
+            <span class="notification">@list.Count()</span>
+
+        }
+        <p class="d-lg-none d-md-block">
+            Some Actions
+        </p>
+    </a>
+    <div class="Notifi dropdown-menu dropdown-menu-right" id="Notifi" aria-labelledby="navbarDropdownMenuLink">
+        @{
+            if (list.Count() != 0)
+            {
+                foreach (var item in list)
+                {
+
+
+                    var urlfix = item.RedireccionUrl.Split('/');
+                    <a class="dropdown-item" type="submit" href="@Url.Action("ValidarNotificacion/" + item.NotificacionId, "Utilities")"> @item.Titulo</a>
+
+
+
+
+                }
+            }
+            else
+            {
+                <a class="dropdown-item" href="#">No hay notificaciones :)</a>
+            }
+        }
+
+    </div>*@
+
+
+<input type="type" name="name" value="" />
+
+<input type="type" name="name" value="" />
+
+
+<button type="button" id="sendmessage" class="btn btn-info pull-right">Enviar</button>
+
+
+hay: <span style="color:rebeccapurple" id="usuarios"></span> usuarios conectados.
+     <br />
+su id es: <span id="UsId"></span>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@*@section scripts{
+
+        <script src="~/Scripts/jquery.signalR-2.4.1.js"></script>
+        <script src="/signalr/hubs"></script>
+    }*@

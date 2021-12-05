@@ -1,0 +1,218 @@
+﻿@model AsistenteGimnasio.Models.Ejercicio
+
+@{
+    if (Model.Nombre != null)
+    {
+        ViewBag.Title = Model.Nombre;
+    }
+
+    bool videoweb = false;
+    string embedurl = null;
+}
+@if (Model.EnlaceVideo.Contains("http") || Model.Imagen.Contains(".com") || Model.Imagen.Contains("https://"))
+{
+    if (Model.EnlaceVideo.Contains("youtube"))
+    {
+        string[] separador = { "watch?v=" };
+        string[] urlv = Model.EnlaceVideo.Split(separador, System.StringSplitOptions.RemoveEmptyEntries);
+
+        embedurl = "https://www.youtube.com/embed/" + urlv[1];
+        videoweb = true;
+
+    }
+    if (Model.EnlaceVideo.Contains("mega"))
+    {
+        string[] separador = { "#!" };
+        string[] urlv = Model.EnlaceVideo.Split(separador, System.StringSplitOptions.RemoveEmptyEntries);
+
+        embedurl = "https://mega.nz/embed#!" + urlv[1];
+        videoweb = true;
+
+    }
+}
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <link href="~/assets/ViewEj/ViewEj.css" rel="stylesheet" />
+    <title></title>
+</head>
+<body style="background-color:white">
+    @{
+        string[] mobil = new string[] { "Mobile", "iPhone", "iPod", "BlackBerry", "Opera Mini", "Sony", "MOT", "Nokia", "samsung", "Android", "SM-" };
+        bool mobile = false;
+        string agent = @HttpContext.Current.Request.UserAgent.ToString();
+
+    }
+    @foreach (var item in mobil)
+    {
+        if (agent.Contains(item))
+        {
+            mobile = true;
+        }
+
+    }
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        <h4 style="text-align:center">@Model.Nombre</h4>
+
+
+
+
+
+        if (mobile != true)
+        {
+            <div class="row" style="text-align:center">
+                <div class="col-md-2"></div>
+                <div class="col-md-8">
+
+                    @if (videoweb)
+                    {
+                        <div class="embed-container">
+                            <iframe width="100%" height="56.26%" src="@embedurl?autoplay=1" frameborder="0" allow="autoplay" allowfullscreen></iframe>
+
+
+                        </div>
+                    }
+                    else
+                    {
+                        @*<video style="width:100%" class="contenedorv1" id="mivideo" poster="" autoplay="autoplay" controls>
+                            <source src="~/Resources/Videos/@Model.EnlaceVideo" type="video/ogg">
+
+                            Tu navegador no soporta el elemento
+                            <code>vídeo</code>
+                        </video>*@
+                        <div class="embed-container">
+                            <iframe width="100%" height="56.26%" src="~/Resources/Videos/@Model.EnlaceVideo?autoplay=1" frameborder="0" allow="autoplay" allowfullscreen></iframe>
+
+
+                        </div>
+
+                    }
+                </div>
+            </div>
+
+        }
+        else
+        {
+
+
+            if (videoweb)
+            {
+                <div class="embed-container">
+                    <iframe width="100%" height="56.26%" src="@embedurl?autoplay=1" frameborder="0" allow="autoplay" allowfullscreen></iframe>
+
+
+                </div>
+            }
+            else
+            {
+                <video style="width:100%" class="contenedorv1" id="mivideo" poster="" autoplay="autoplay" controls>
+                    <source src="~/Resources/Videos/@Model.EnlaceVideo" type="video/ogg">
+
+                    Tu navegador no soporta el elemento
+                    <code>vídeo</code>
+                </video>
+
+            }
+
+
+        }
+
+        if (User.Identity.IsAuthenticated)
+        {
+            <div @*class="contenedorv2"*@ class="col-md-12" style=" margin-top:5%; text-align:center ">
+                <div class="form-group">
+                    <div class="col-md-12">
+                        <input type="submit" value="Registrar Tiempo" class="btn btn-default" style="width:auto" />
+                    </div>
+                </div>
+            </div>
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+    <style>
+        .embed-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+        }
+
+            .embed-container iframe {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+            }
+    </style>
+
+
+
+
+
+
+
+    @*<br />Tiempo:<span id="tiempo"></span>
+        <br />Tiempo en segundos:<span id="tiemposegundos"></span>*@
+
+
+
+
+
+
+    <script>
+
+
+        function hora(segundos) {
+            var d = new Date(segundos * 1000);
+            // Ajuste de las 23 horas
+            var hora = (d.getHours() == 0) ? 23 : d.getHours() - 1;
+            var hora = (hora < 9) ? "0" + hora : hora;
+            var minuto = (d.getMinutes() < 9) ? "0" + d.getMinutes() : d.getMinutes();
+            var segundo = (d.getSeconds() < 9) ? "0" + d.getSeconds() : d.getSeconds();
+            return hora + ":" + minuto + ":" + segundo;
+
+        }
+
+        //Obtenemos la referencia al vídeo
+        var v = document.getElementById("mivideo");
+
+        v.addEventListener("timeupdate", function (ev) {
+            document.getElementById("tiemposegundos").innerHTML = v.currentTime;
+            document.getElementById("tiempo").innerHTML = hora(v.currentTime);
+        }, true);
+
+
+
+
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

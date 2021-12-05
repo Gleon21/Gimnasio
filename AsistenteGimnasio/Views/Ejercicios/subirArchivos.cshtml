@@ -1,0 +1,136 @@
+﻿<html xmlns="http://www.w3.org/1999/xhtml">
+@using Microsoft.AspNet.Identity
+@using AsistenteGimnasio.Models
+
+@{
+    ApplicationDbContext db = new ApplicationDbContext();
+}
+<head>
+    <title></title>
+    <link href="~/assets/adminmart/dist/css/style.min.css" rel="stylesheet" />
+    <link href="~/assets/Material_templates/assets/css/material-dashboard.css?v=2.1.2" rel="stylesheet" />
+    <link href="~/assets/uploadfile.css" rel="stylesheet" />
+
+</head>
+<body>
+    @using (Html.BeginForm("SubirArchivosEJ", "Ejercicios", FormMethod.Post, FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        
+            int idej = ViewBag.idej;
+            var ej = (from x in db.Ejercicios
+                      where x.EjercicioId == idej
+                      select x).FirstOrDefault();
+        
+
+
+
+
+        if (ej.EnlaceVideo == null)
+        {
+            <div class="row">
+                <div class="col-sm-12 col-md-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">Agregar Video</h4>
+
+                            @*<form class="mt-4">*@
+                            <div class="input-group">
+                                <div class="custom-file form-control text-box single-line">
+                                    <input type="file" class="custom-file-input " name="Video" accept="video/*" id="inputGroupFile04">
+                                    <label class="custom-file-label" for="inputGroupFile04">Choose file</label>
+                                </div>
+
+                            </div>
+                            @*</form>*@
+                        </div>
+                    </div>
+                </div>
+                
+
+
+
+
+
+            </div>
+
+
+
+        }
+        if (ej.Imagen == null)
+        {
+            <div class="col-sm-12 col-md-12" style="margin-top:3%">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Agregar Imagen</h4>
+
+                        @*<form class="mt-4">*@
+                        <div class="input-group">
+                            <div class="custom-file form-control text-box single-line">
+                                <input type="file" class="custom-file-input " name="Poster" accept="image/*" id="inputGroupFile04">
+                                <label class="custom-file-label" for="inputGroupFile04">Choose file</label>
+                            </div>
+
+                        </div>
+                        @*</form>*@
+                    </div>
+                </div>
+            </div>
+
+        }
+        <button style="margin-top:5%" class="btn waves-effect waves-light btn-lg btn-block btn-primary" type="submit">Subir archivo</button>
+    }
+
+    <script src="~/assets/adminmart/assets/libs/jquery/dist/jquery.min.js "></script>
+    <!-- Bootstrap tether Core JavaScript -->
+    <script src="~/assets/adminmart/assets/libs/popper.js/dist/umd/popper.min.js "></script>
+    @*<script src="~/assets/adminmart/assets/libs/bootstrap/dist/js/bootstrap.min.js "></script>*@
+    <!-- apps -->
+    <script src="~/assets/adminmart/dist/js/app.min.js "></script>
+    <script src="~/assets/adminmart/dist/js/app.init-menusidebar.js"></script>
+    <script src="~/assets/adminmart/dist/js/app-style-switcher.js "></script>
+    <script src="~/assets/adminmart/dist/js/feather.min.js"></script>
+    <!-- slimscrollbar scrollbar JavaScript -->
+    <script src="~/assets/adminmart/assets/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js "></script>
+    <script src="~/assets/adminmart/assets/extra-libs/sparkline/sparkline.js "></script>
+    <!-- theme js -->
+    <!--Menu sidebar -->
+    <script src="~/assets/adminmart/dist/js/sidebarmenu.js "></script>
+    <!--Custom JavaScript -->
+    <script src="~/assets/adminmart/dist/js/custom.min.js "></script>
+    @*<link href="~/assets/Menus/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">*@
+</body>
+</html>
+
+
+@*<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link href="~/assets/adminmart/dist/css/style.min.css" rel="stylesheet" />
+        <link href="~/assets/uploadfile.css" rel="stylesheet" />
+        <link href="~/assets/Menus/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <title></title>
+    </head>
+    <body>
+
+
+
+
+
+        <script src="~/assets/adminmart/assets/libs/jquery/dist/jquery.min.js "></script>
+        <!-- Bootstrap tether Core JavaScript -->
+        <script src="~/assets/adminmart/assets/libs/popper.js/dist/umd/popper.min.js "></script>
+        <script src="~/assets/adminmart/assets/libs/bootstrap/dist/js/bootstrap.min.js "></script>
+        <!-- apps -->
+        <script src="~/assets/adminmart/dist/js/app.min.js "></script>
+        <script src="~/assets/adminmart/dist/js/app.init-menusidebar.js"></script>
+        <script src="~/assets/adminmart/dist/js/app-style-switcher.js "></script>
+        <script src="~/assets/adminmart/dist/js/feather.min.js"></script>
+        <!-- slimscrollbar scrollbar JavaScript -->
+        <script src="~/assets/adminmart/assets/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js "></script>
+        <script src="~/assets/adminmart/assets/extra-libs/sparkline/sparkline.js "></script>
+        <!-- theme js -->
+        <!--Menu sidebar -->
+        <script src="~/assets/adminmart/dist/js/sidebarmenu.js "></script>
+        <!--Custom JavaScript -->
+        <script src="~/assets/adminmart/dist/js/custom.min.js "></script>
+    </body>
+    </html>*@

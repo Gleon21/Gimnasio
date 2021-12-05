@@ -1,0 +1,77 @@
+﻿
+@model AsistenteGimnasio.Models.Ejercicio
+
+@{
+    ViewBag.Title = "Preview-" + Model.Nombre;
+}
+
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    @{
+        string img;
+
+        if (Model.Imagen.Contains("http") || Model.Imagen.Contains("http"))
+        {
+            img = Model.Imagen;
+        }
+        else
+        {
+            img = "~/Resources/Imagenes/" + Model.Imagen;
+        }
+    }
+
+   
+</head>
+@*<body style="background-image:url('@img')" id="fondo"></body>*@
+<body  >
+    <div >
+        @using (Html.BeginForm() )
+        {
+            @Html.AntiForgeryToken()
+            <div class="row"  >
+                <div class="col-md-8 col-lg-8 mb-8 m-b-8">
+
+
+                    <div id="nombre" style="margin-top:5%">@Model.Nombre</div>
+                    <div id="descripcion" style="margin-top:5% ; margin-bottom:5%">@Model.Descripcion</div>
+
+                </div>
+                <div class="col-md-4 col-lg-4 mb-4 m-b-4 "  >
+                    <div style="margin-top:50%" class="btn-resaltar-estilo-2">
+                        <a href="~/Ejercicios/Ejercicio/@Model.EjercicioId"><img class="card2-img-top " src="~/Resources/play-button.png" height="300px"></a>
+                    </div>
+                </div>
+
+            </div>
+
+
+
+
+
+        }
+
+    </div>
+    <footer>
+        <div style="margin-top:-5%" id="back">
+            <a href="javascript:history.back()"><i @*class="material-icons"*@>Regresar @*keyboard_backspace*@</i></a>
+        </div>
+    </footer>
+
+    <style>
+        #back {
+            font-size: 40px;
+            
+        }
+        #nombre {
+            font-size: 60px;
+            line-height: 0.8;
+        }
+        #descripcion {
+            font-size: 20px;
+        }
+    </style>
+</body>
+</html>

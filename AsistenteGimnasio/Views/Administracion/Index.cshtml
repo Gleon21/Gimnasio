@@ -1,0 +1,62 @@
+﻿
+@{
+    ViewBag.Title = "Administracion General";
+}
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <style>
+        .cat1{
+            color:black;
+            text-align:center;
+
+        }
+            .cat1.p {
+                color: black;
+                text-align: center;
+            }
+            .cat1.i{
+                width:100px;
+                text-align:center;
+            }
+    </style>
+</head>
+<body>
+    <div class="row">
+        <div class="col-md-3" style="height:300px">
+            <div class="form-group card cat1 " style="height:100%">
+                <a href="@Url.Action("Listado","Ejercicios")">
+                    <img src="~/assets/Icons/fitness_center.png" width="100%" />
+                    <h4 class="cat1" style="margin-top:3%">Ejercicios</h4>
+                </a>
+            </div>
+
+        </div>
+        <div class="col-md-3" style="height:300px">
+            <div class="form-group card cat1 " style="height:100%">
+                <a href="@Url.Action("Create","Categorias")">
+                    <img src="~/assets/Icons/dashboard.png" width="100%" />
+                    <h4 class="cat1" style="margin-top:3%">Categorías</h4>
+                </a>
+            </div>
+
+        </div>
+        
+        <div class="col-md-3">
+
+
+        </div>
+        <div class="col-md-3">
+
+
+        </div>
+        <div class="col-md-3">
+
+
+        </div>
+
+    </div>
+
+
+</body>
+</html>

@@ -1,0 +1,117 @@
+﻿@model IEnumerable<AsistenteGimnasio.Models.Ejercicio>
+
+@{
+    ViewBag.Title = "Ejercicios";
+}
+
+
+<!-- Bootstrap core CSS -->
+<!-- Custom styles for this template -->
+@*<link href="~/assets/Menus/css/shop-homepage.css" rel="stylesheet">*@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    @*<link href="~/assets/Menus/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">*@
+    <title></title>
+</head>
+
+<body>
+
+
+
+    <div class="row">
+        @*@foreach (var item in Model)
+            {
+                <img src="@item.Imagen"  />
+            }*@
+
+        @foreach (var item in Model)
+        {
+
+
+            @*<div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card2 h-100">
+                        <a href="~/Ejercicios/Preview/@item.EjercicioId"><img class="card2-img-top" src="~/Resources/Imagenes/@item.Imagen" alt=""></a>
+                        <div class="card2-body">
+                            <h4 class="card2-title">
+                                <a href="~/Ejercicios/Preview/@item.EjercicioId">@item.Nombre</a>
+                            </h4>
+                            <h5>@item.Descripcion</h5>
+                            <p class="card2-text">Duración: @item.Duracion </p>
+                        </div>
+                        <div class="card2-footer" style="text-align:center" id="card2-footer">
+                            <small class="text-muted">calorías: @item.Calorias</small>
+                        </div>
+                    </div>
+                </div>*@
+
+            <div class="col-lg-4 col-md-4 mb-4">
+                <div class="card" style="background-color:white; height:300px ">
+                    @if (item.Imagen != null)
+                    {
+                        if (item.Imagen.Contains("http") || item.Imagen.Contains(".com"))
+                        {
+                            <div style="height:200px">
+                                <a href="~/Ejercicios/Preview/@item.EjercicioId"><img class="card-img-top" src="@item.Imagen" height="100%"></a>
+                            </div>
+                            <div style="text-align:center">
+                                <hr />
+                                <h3 class="card-title">
+                                    <a href="~/Ejercicios/Preview/@item.EjercicioId">@item.Nombre</a>
+                                </h3>
+
+                            </div>
+                        }
+                        else
+                        {
+                            <div style="height:200px">
+                                <a href="~/Ejercicios/Preview/@item.EjercicioId"><img class="card-img-top" src="~/Resources/Imagenes/@item.Imagen" height="100%"></a>
+                            </div>
+                            <div style="text-align:center">
+                                <hr />
+                                <h3 class="card-title">
+                                    <a href="~/Ejercicios/Preview/@item.EjercicioId">@item.Nombre</a>
+                                </h3>
+
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div style="height:200px">
+                            <a href="~/Ejercicios/Preview/@item.EjercicioId"><img class="card-img-top" src="~/Resources/No Imagen.png"  height="100%"></a>
+                        </div>
+                        <div style="text-align:center">
+                            <hr />
+                            <h3 class="card-title">
+                                <a href="~/Ejercicios/Preview/@item.EjercicioId">@item.Nombre</a>
+                            </h3>
+
+                        </div>
+                    }
+
+
+                    @*<div class="card-body" style="text-align:center">
+
+            @item.Descripcion
+
+            <hr />
+            <p class="card-text">Duracio: @item.Duracion </p>
+
+            <div class="card" style="text-align:center; background-color:lightgray">
+                <small class="text-muted">calorias: @item.Calorias</small>
+            </div>
+        </div>*@
+
+                </div>
+
+            </div>
+
+            @*<div class="col-md-4"> <a href="~/Ejercicios/Ejercicio/@item.EjercicioId"> <img src="~/Resources/1.jpg" alt="Alternate Text" /> </a> </div>*@
+        }
+    </div>
+    <!-- Bootstrap core JavaScript -->
+    @*<script src="~/assets/Menus/vendor/jquery/jquery.min.js"></script>
+        <script src="~/assets/Menus/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>*@
+
+</body>
+</html>

@@ -1,0 +1,279 @@
+﻿@model IEnumerable<AsistenteGimnasio.Models.ApplicationUser>
+
+@{
+    ViewBag.Title = "Listado de Clientes";
+}
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    @using Microsoft.AspNet.Identity
+    @using AsistenteGimnasio.Models
+
+    
+
+    @{ 
+        List<ApplicationUser> ads = new List<ApplicationUser>();
+
+        ApplicationDbContext db = new ApplicationDbContext();
+        var  usadm = (from x in db.applicationUserRols
+                          //where x.RoleId == "1" || x.RoleId== "Administrador"
+                      select x).ToList();
+
+        foreach (var item in usadm)
+        {
+            var adm = (from x in db.Users
+                       where x.Id == item.UserId
+                       select x).FirstOrDefault();
+            if (adm != null)
+            {
+                ads.Add(adm);
+            }
+        }
+    }
+
+</head>
+<body>
+
+
+    <div class="col-md-12 panel-primary filterable" id="Clientes">
+        <style type="text/css" media="print">
+
+
+            #parte1 {
+                display: none;
+                text-align: right;
+            }
+
+            #parte2 {
+                display: none;
+                text-align: right;
+            }
+
+            #parte3 {
+                display: none;
+                text-align: right;
+            }
+
+            #parte4 {
+                text-align: center;
+            }
+        </style>
+        <div class="card">
+            <div class="card-header card-header-primary">
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <h4 class="card-title" id="parte4">Listado de usuarios registrados</h4>
+                        <p class="card-category" id="parte3">Seleccione el nombre para ver los detalles</p>
+                    </div>
+                    <div class="col-md-6" id="parte1">
+                        <a class="nav-link pull-right" href="#" onclick="javascript:imprim1(Clientes);">
+                            <i class="material-icons" style="color:white">print</i>
+                            @*<p>Categorias</p>*@
+                        </a>
+                    </div>
+                    <div class="col-md-2" id="parte2">
+
+                        <div class=" pull-right">
+                            <button class="btn btn-default btn-xs btn-filter" style="background-color:#B57CDD; color:white; border-color:#B57CDD; "><span class="glyphicon glyphicon-filter"></span> Buscar</button>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table">
+
+                        <thead>
+                            <tr class="filters">
+                                <th><input type="text" class="form-control" placeholder="ID" disabled></th>
+                                <th><input type="text" class="form-control" placeholder="Nombre" disabled></th>
+                                <th><input type="text" class="form-control" placeholder="Apellido" disabled></th>
+                                <th><input type="text" class="form-control" placeholder="Email" disabled></th>
+                                <th><input type="text" class="form-control" placeholder="Dirección" disabled></th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+
+                                string idc = item.Id.Substring(0, 5) + "...";
+
+                                <tr>
+                                    <td>@idc</td>
+                                    <td> <a class="link" href="@Url.Action("DetallesUsuario/"+item.Id,"Utilities")" style="color:black; "> <b> @item.Nombre</b></a></td>
+                                    <td>@item.Apellido</td>
+                                    <td>@item.Email</td>
+                                    <td>@item.Direccion</td>
+                                </tr>
+
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+
+        @* Administradores *@
+        @*<div class="card">
+                <div class="card-header card-header-primary">
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <h4 class="card-title" id="parte4">Listado de Administradores</h4>
+                            <p class="card-category" id="parte3">Seleccione el nombre para ver los detalles</p>
+                        </div>
+                        <div class="col-md-6" id="parte1">
+                            <a class="nav-link pull-right" href="#" onclick="javascript:imprim1(Clientes);">
+                                <i class="material-icons" style="color:white">print</i>
+
+                            </a>
+                        </div>
+                        <div class="col-md-2" id="parte2">
+
+                            <div class=" pull-right">
+                                <button class="btn btn-default btn-xs btn-filter" style="background-color:#B57CDD; color:white; border-color:#B57CDD; "><span class="glyphicon glyphicon-filter"></span> Buscar</button>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+
+                            <thead>
+                                <tr class="filters">
+                                    <th><input type="text" class="form-control" placeholder="ID" disabled></th>
+                                    <th><input type="text" class="form-control" placeholder="Nombre" disabled></th>
+                                    <th><input type="text" class="form-control" placeholder="Apellido" disabled></th>
+                                    <th><input type="text" class="form-control" placeholder="Email" disabled></th>
+                                    <th><input type="text" class="form-control" placeholder="Dirección" disabled></th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                @foreach (var item in ads)
+                                {
+
+                                    string idc = item.Id.Substring(0, 5) + "...";
+
+                                    <tr>
+                                        <td>@idc</td>
+                                        <td> <a class="link" href="@Url.Action("DetallesUsuario/"+item.Id,"Utilities")" style="color:black; "> <b> @item.Nombre</b></a></td>
+                                        <td>@item.Apellido</td>
+                                        <td>@item.Email</td>
+                                        <td>@item.Direccion</td>
+                                    </tr>
+
+                                }
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>*@
+    </div>
+
+    <style>
+        .filterable {
+            margin-top: 15px;
+        }
+
+            .filterable .panel-heading .pull-right {
+                margin-top: -20px;
+            }
+
+            .filterable .filters input[disabled] {
+                background-color: transparent;
+                border: none;
+                cursor: auto;
+                box-shadow: none;
+                padding: 0;
+                height: auto;
+            }
+
+                .filterable .filters input[disabled]::-webkit-input-placeholder {
+                    color: #333;
+                }
+
+                .filterable .filters input[disabled]::-moz-placeholder {
+                    color: #333;
+                }
+
+                .filterable .filters input[disabled]:-ms-input-placeholder {
+                    color: #333;
+                }
+    </style>
+
+    <script>
+        /*
+Please consider that the JS part isn't production ready at all, I just code it to show the concept of merging filters and titles together !
+*/
+        $(document).ready(function () {
+            $('.filterable .btn-filter').click(function () {
+                var $panel = $(this).parents('.filterable'),
+                    $filters = $panel.find('.filters input'),
+                    $tbody = $panel.find('.table tbody');
+                if ($filters.prop('disabled') == true) {
+                    $filters.prop('disabled', false);
+                    $filters.first().focus();
+                } else {
+                    $filters.val('').prop('disabled', true);
+                    $tbody.find('.no-result').remove();
+                    $tbody.find('tr').show();
+                }
+            });
+
+            $('.filterable .filters input').keyup(function (e) {
+                /* Ignore tab key */
+                var code = e.keyCode || e.which;
+                if (code == '9') return;
+                /* Useful DOM data and selectors */
+                var $input = $(this),
+                    inputContent = $input.val().toLowerCase(),
+                    $panel = $input.parents('.filterable'),
+                    column = $panel.find('.filters th').index($input.parents('th')),
+                    $table = $panel.find('.table'),
+                    $rows = $table.find('tbody tr');
+                /* Dirtiest filter function ever ;) */
+                var $filteredRows = $rows.filter(function () {
+                    var value = $(this).find('td').eq(column).text().toLowerCase();
+                    return value.indexOf(inputContent) === -1;
+                });
+                /* Clean previous no-result if exist */
+                $table.find('tbody .no-result').remove();
+                /* Show all rows, hide filtered ones (never do that outside of a demo ! xD) */
+                $rows.show();
+                $filteredRows.hide();
+                /* Prepend no-result row if all rows are filtered */
+                if ($filteredRows.length === $rows.length) {
+                    $table.find('tbody').prepend($('<tr class="no-result text-center"><td colspan="' + $table.find('.filters th').length + '">No se encontraron resultados</td></tr>'));
+                }
+            });
+        });
+    </script>
+
+
+    @* Imprimir *@
+    <script>
+        function imprim1(Clientes) {
+            var printContents = document.getElementById('Clientes').innerHTML;
+            w = window.open();
+            w.document.write(printContents);
+            w.document.close(); // necessary for IE >= 10
+            w.focus(); // necessary for IE >= 10
+            w.print();
+            w.close();
+            return true;
+        }
+    </script>
+</body>
+</html>
+
